@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class control extends ChangeNotifier {
-  String ip = '192.168.1.7';
+  String ip = '192.168.1.2';
   late Box idbox = Hive.box("id");
   late Box namebox = Hive.box("name");
   late Box phonebox = Hive.box("phone");
