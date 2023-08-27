@@ -33,43 +33,43 @@ class _doctor extends State<doctor> {
       Provider.of<control>(context, listen: false).getnumbercomment();
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Text(
-                "التعليقات",
-                textAlign: TextAlign.center,
-              )),
-              Expanded(
-                  child: Text(
-                'الملف الشخصي',
-                textAlign: TextAlign.center,
-              )),
-              Expanded(
-                  child: Text(
-                'معلومات طبيه',
-                textAlign: TextAlign.center,
-              )),
-              Expanded(
-                  child: Text(
-                'اسئله المرضي',
-                textAlign: TextAlign.center,
-              )),
-              Expanded(
-                  child: Text(
-                'الدكاتره',
-                textAlign: TextAlign.center,
-              )),
-            ],
-          ),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Expanded(
+    //               child: Text(
+    //             "التعليقات",
+    //             textAlign: TextAlign.center,
+    //           )),
+    //           Expanded(
+    //               child: Text(
+    //             'الملف الشخصي',
+    //             textAlign: TextAlign.center,
+    //           )),
+    //           Expanded(
+    //               child: Text(
+    //             'معلومات طبيه',
+    //             textAlign: TextAlign.center,
+    //           )),
+    //           Expanded(
+    //               child: Text(
+    //             'اسئله المرضي',
+    //             textAlign: TextAlign.center,
+    //           )),
+    //           Expanded(
+    //               child: Text(
+    //             'الدكاتره',
+    //             textAlign: TextAlign.center,
+    //           )),
+    //         ],
+    //       ),
+    //       duration: Duration(seconds: 3),
+    //     ),
+    //   );
+    // });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
