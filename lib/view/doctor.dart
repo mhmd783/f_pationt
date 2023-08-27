@@ -11,19 +11,6 @@ class doctor extends StatefulWidget {
 }
 
 class _doctor extends State<doctor> {
-  showdetails() {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Not Fount Patient'),
-        duration: Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'Doctor',
-          onPressed: () {},
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -234,6 +221,14 @@ class _doctor extends State<doctor> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             );
           }),
+          leading: IconButton(
+              onPressed: () {
+                _shar();
+              },
+              icon: Icon(
+                Icons.share,
+                color: Colors.black,
+              )),
           backgroundColor: const Color.fromARGB(255, 243, 243, 58),
         ),
         body: Consumer<control>(builder: (context, val, child) {
@@ -291,16 +286,19 @@ class _doctor extends State<doctor> {
                   child: CircularProgressIndicator(),
                 );
         }),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Consumer<control>(builder: (context, val, child) {
+              return FloatingActionButton(
           backgroundColor: const Color.fromARGB(255, 243, 243, 58),
           child: Icon(
             Icons.person_search,
             color: Colors.black,
           ),
           onPressed: () {
+            val.getspcialty();
+            
             _Search();
           },
-        ));
+        );}));
   }
 
   //////////////////////////////////////////////////////
@@ -404,6 +402,55 @@ class _doctor extends State<doctor> {
                     val.doctors = [];
                     val.indexenddoctor = 1;
                     val.getalldoctors();
+                    Navigator.of(context).pop();
+                  },
+                );
+              }),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _shar() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          title: const Text(
+            "شارك رابط التطبيق مع اصدقائك ربما يحتاجونه لحجز دكتور لمرضاهم",
+            textAlign: TextAlign.end,
+          ),
+          elevation: 10,
+          content: Form(
+            child: Consumer<control>(builder: (context, val, child) {
+              return Column(
+                children: [
+                  Center(
+                    child: Text(
+                      " https://www.google.com",
+                      style: TextStyle(color: Colors.redAccent, fontSize: 15),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ),
+          actions: <Widget>[
+            CircleAvatar(
+              backgroundColor: Colors.grey.shade300,
+              child: Consumer<control>(builder: (context, val, child) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.copy,
+                    color: Colors.black,
+                  ),
+                  onPressed: () async {
+                    Clipboard.setData(ClipboardData(
+                        text:
+                            "تطبيق دكتور لحجز معاد كشف مع افضل واقرب الدكاتره ليك واسعار الكشف وعنوان الدكتور وهيرد عليك حد ياكد حجزك حمل التطبيق وشاركه مع اصدقائك من هذا اللينك  \n https://google.com"));
                     Navigator.of(context).pop();
                   },
                 );

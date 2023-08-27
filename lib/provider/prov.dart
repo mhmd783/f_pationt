@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class control extends ChangeNotifier {
-  String ip = '192.168.1.2';
+  String ip = '192.168.1.7';
   late Box idbox = Hive.box("id");
   late Box namebox = Hive.box("name");
   late Box phonebox = Hive.box("phone");
@@ -14,84 +14,8 @@ class control extends ChangeNotifier {
   late Box agebox = Hive.box("age");
   int gender = 0;
 
-  List<String> specialty = [
-    "",
-    "اسنان",
-    "اطفال وحديثي الولاده",
-    "جلدية",
-    "مخ واعصاب",
-    "عظام",
-    "نساء وتوليد",
-    "باطنة",
-    "عيون",
-    "كبد",
-    "كلى",
-    "انف وازن وحنجر",
-    "جراحة تجميل",
-    "قلب واوعية دمويه",
-    "الآشعة التداخلية",
-    "امراض الدم",
-    "اورام",
-    "تخسيس وتغذية",
-    "نفسي",
-    "جراحة اطفال",
-    "جراحةأورام",
-    "جراحة اوعية دموية",
-    "جراحة سمنة ومناظر",
-    "جراحة عامة",
-    "جراحة عمود فقري",
-    "جراحة قلب وصدر",
-    "جراحة مخ واعصاب",
-    "جهاز هضمي ومناظير",
-    "حساسية ومناعة",
-    "حقن مجهري واطفال انابيب",
-    "ذكورة وعقم",
-    "روماتيزم",
-    "سكر وغدد صماء",
-    "سمعيات",
-    "صدر وجهاز تنفسي",
-    "طب الاسرة",
-    "طب المسنين",
-    "طب تقويمي",
-    "علاج الآلام",
-    "علاج طبيعي واصابات ملاعب",
-    "مراكز اشعه",
-    "مسالك بوليه",
-    "معامل تحاليل",
-    "ممارسة عامة",
-    "نطق وتخاطب"
-  ];
-  List<String> city = [
-    "",
-    "القاهرة",
-    "الجيزة",
-    "الأسكندرية",
-    "الدقهلية",
-    "الشرقية",
-    "المنوفية",
-    "القليوبية",
-    "البحيرة",
-    "الغربية",
-    "بور سعيد",
-    "دمياط",
-    "الإسماعلية",
-    "السويس",
-    "كفر الشيخ",
-    "الفيوم",
-    "بني سويف",
-    "مطروح",
-    "شمال سيناء",
-    "جنوب سيناء",
-    "المنيا",
-    "أسيوط",
-    "سوهاج",
-    "قنا",
-    "البحر الأحمر",
-    "الأقصر",
-    "أسوان",
-    "الواحات",
-    "الوادي الجديد"
-  ];
+  List<String> specialty = [""];
+  List<String> city = [""];
 
   int indcity = 0;
   int indspecialty = 0;
@@ -156,7 +80,7 @@ class control extends ChangeNotifier {
     print('object');
     print('object');
     print('object');
-    print("${data}"); 
+    print("${data}");
     notifyListeners();
   }
 
@@ -733,6 +657,47 @@ class control extends ChangeNotifier {
 
   getiddoctorfrompagedoctor(int i) {
     id_doctor = doctors[i]['id'];
+  }
+
+  void getcitys() async {
+    city = [""];
+    String url = "http://$ip/doctor/view/get_doctors.php?getcity=getcity";
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (!response.body.isEmpty) {
+        var responsebody = jsonDecode(response.body);
+        //posts.add(responsebody);
+        for (var doc in responsebody) {
+          city.add(doc['city']);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+    print('${city}');
+
+    notifyListeners();
+  }
+
+  void getspcialty() async {
+    specialty = [""];
+    String url =
+        "http://$ip/doctor/view/get_doctors.php?getspcialty=getspcialty";
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (!response.body.isEmpty) {
+        var responsebody = jsonDecode(response.body);
+        //posts.add(responsebody);
+        for (var row in responsebody) {
+          specialty.add(row['specialty']);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+    print('${specialty}');
+    getcitys();
+    notifyListeners();
   }
 
   TextEditingController search = new TextEditingController();
