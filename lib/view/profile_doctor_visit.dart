@@ -539,7 +539,7 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
             child: Consumer<control>(builder: (context, val, child) {
               return Column(
                 children: [
-                  Center(
+                  val.datadoctor[0]['active']>0?Center(
                     child: val.checkaddpationt[0]['mes'] == 'good'
                         ? Text(
                             'تم حجز الكشف ',
@@ -547,7 +547,11 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
                                 color: Colors.greenAccent, fontSize: 15),
                           )
                         : CircularProgressIndicator(),
-                  ),
+                  ):Center(child:Text(
+                            'حساب الدكتور متوقف يمكنك حجز دكتور اخر ',
+                            style: TextStyle(
+                                color: Colors.redAccent, fontSize: 15),
+                          ) ),
                 ],
               );
             }),

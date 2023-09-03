@@ -25,6 +25,9 @@ class _profile extends State<profile> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<control>(context, listen: false).getpationtreservation();
     });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<control>(context, listen: false).getlinkapp();
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -36,6 +39,9 @@ class _profile extends State<profile> {
           
         ),
       );
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _shar();
     });
     super.initState();
   }
@@ -131,6 +137,14 @@ class _profile extends State<profile> {
                 color: Colors.black,
               ))
         ],
+        leading: IconButton(
+              onPressed: () {
+                _shar();
+              },
+              icon: Icon(
+                Icons.share,
+                color: Colors.black,
+              )),
       ),
       body: Consumer<control>(builder: (context, val, child) {
         return Container(
@@ -895,6 +909,54 @@ class _profile extends State<profile> {
                     color: Colors.black,
                   ),
                   onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                );
+              }),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Future<void> _shar() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          title: const Text(
+            "شارك رابط التطبيق مع اصدقائك ربما يحتاجونه لحجز دكتور لمرضاهم",
+            textAlign: TextAlign.end,
+          ),
+          elevation: 10,
+          content: Form(
+            child: Consumer<control>(builder: (context, val, child) {
+              return Column(
+                children: [
+                  Center(
+                    child: Text(
+                      " ${val.linkapp[0]['data']}",
+                      style: TextStyle(color: Colors.redAccent, fontSize: 15),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ),
+          actions: <Widget>[
+            CircleAvatar(
+              backgroundColor: Colors.grey.shade300,
+              child: Consumer<control>(builder: (context, val, child) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.copy,
+                    color: Colors.black,
+                  ),
+                  onPressed: () async {
+                    Clipboard.setData(ClipboardData(
+                        text:
+                            "تطبيق دكتور لحجز معاد كشف مع افضل واقرب الدكاتره ليك واسعار الكشف وعنوان الدكتور وهيرد عليك حد ياكد حجزك حمل التطبيق وشاركه مع اصدقائك من هذا اللينك  \n https://google.com"));
                     Navigator.of(context).pop();
                   },
                 );

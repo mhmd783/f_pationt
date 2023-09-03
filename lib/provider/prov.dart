@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
 
 class control extends ChangeNotifier {
-  String ip = '192.168.1.7';
+  String ip = 'https://mydoctory.net';
   late Box idbox = Hive.box("id");
   late Box namebox = Hive.box("name");
   late Box phonebox = Hive.box("phone");
@@ -32,7 +30,7 @@ class control extends ChangeNotifier {
   void registernew() async {
     datarigester = null;
     String url =
-        "http://$ip/doctor/view/siginup.php?name=${name.text}&phone=${phone.text}&pass=${pass.text}&age=${age.text}&gender=${genderform}";
+        "$ip/doctor/view/siginup.php?name=${name.text}&phone=${phone.text}&pass=${pass.text}&age=${age.text}&gender=${genderform}";
 
     try {
       var responseregister = await http.get(Uri.parse(url));
@@ -60,7 +58,7 @@ class control extends ChangeNotifier {
   void getdata() async {
     data = null;
     String url =
-        "http://$ip/doctor/view/signin.php?phone=${phonesignin.text}&pass=${passsignin.text}";
+        "$ip/doctor/view/signin.php?phone=${phonesignin.text}&pass=${passsignin.text}";
 
     try {
       var response = await http.get(Uri.parse(url));
@@ -136,7 +134,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/add_time_work.php?id_doctor=${idbox.get('id')}&start_time=${timestartnew}&end_time=${timeendnew}&day=${day}";
+        "$ip/doctor/view/add_time_work.php?id_doctor=${idbox.get('id')}&start_time=${timestartnew}&end_time=${timeendnew}&day=${day}";
 
     try {
       var response = await http.get(Uri.parse(url));
@@ -157,7 +155,7 @@ class control extends ChangeNotifier {
   void get_work_time() async {
     data_work_time_get = [];
     String url =
-        "http://$ip/doctor/view/get_time_work.php?id_doctor=${idbox.get('id')}";
+        "$ip/doctor/view/get_time_work.php?id_doctor=${idbox.get('id')}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -216,7 +214,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/get_time_work.php?id_doctordelet=${idbox.get('id')}&id_day=${data_work_time_get[idday]['id']}";
+        "$ip/doctor/view/get_time_work.php?id_doctordelet=${idbox.get('id')}&id_day=${data_work_time_get[idday]['id']}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -242,7 +240,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id')}&name=${namebox.get('name')}&post=${post.text}";
+        "$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id')}&name=${namebox.get('name')}&post=${post.text}";
     post.text = '';
     try {
       var response = await http.get(Uri.parse(url));
@@ -265,7 +263,7 @@ class control extends ChangeNotifier {
   void getmypost() async {
     myposts = [];
     String url =
-        "http://$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id').toString()}&get=get";
+        "$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id').toString()}&get=get";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -296,7 +294,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id').toString()}&id_post=$idpost";
+        "$ip/doctor/view/add_post_pationt.php?id_pationt=${idbox.get('id').toString()}&id_post=$idpost";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -319,7 +317,7 @@ class control extends ChangeNotifier {
   int indexendpost = 1;
   void getallposts() async {
     //posts = [];
-    String url = "http://$ip/doctor/view/get_all_posts.php?id=$indexendpost";
+    String url = "$ip/doctor/view/get_all_posts.php?id=$indexendpost";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -350,7 +348,7 @@ class control extends ChangeNotifier {
   List datadoctor = [];
   void getdatadoctorvesitprofile() async {
     datadoctor = [];
-    String url = "http://$ip/doctor/view/signindoc.php?id=$id_doctor";
+    String url = "$ip/doctor/view/signindoc.php?id=$id_doctor";
 
     try {
       var response = await http.get(Uri.parse(url));
@@ -372,7 +370,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/get_time_work.php?id_doctor=${id_doctor.toString()}";
+        "$ip/doctor/view/get_time_work.php?id_doctor=${id_doctor.toString()}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -391,7 +389,7 @@ class control extends ChangeNotifier {
   void getpost_profile_doctor_visit() async {
     post_visit = [];
     String url =
-        "http://$ip/doctor/view/add_post_doc.php?id_doctor=${id_doctor.toString()}&get=get";
+        "$ip/doctor/view/add_post_doc.php?id_doctor=${id_doctor.toString()}&get=get";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -433,7 +431,7 @@ class control extends ChangeNotifier {
   void getallquistion() async {
     //posts = [];
     String url =
-        "http://$ip/doctor/view/getallquistion.php?id=$indexendquistion";
+        "$ip/doctor/view/getallquistion.php?id=$indexendquistion";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -470,7 +468,7 @@ class control extends ChangeNotifier {
   getcommentpost() async {
     Comments = [];
     String url =
-        "http://$ip/doctor/view/comment.php?id_posts=${idquistion.toString()}";
+        "$ip/doctor/view/comment.php?id_posts=${idquistion.toString()}";
 
     try {
       var response = await http.get(Uri.parse(url));
@@ -501,7 +499,7 @@ class control extends ChangeNotifier {
     ];
     if (date != '' && namepationt != '' && phonepationt != '') {
       String url =
-          "http://$ip/doctor/view/addpationt.php?id_pationt=${idbox.get('id')}&id_doctor=${datadoctor[0]['id']}&name_doctor=${datadoctor[0]['f_name']} ${datadoctor[0]['s_name']}&namepationt=${namepationt.text}&phonepationt=${phonepationt.text}&agepationt=${agepationt.text}&date=$date";
+          "$ip/doctor/view/addpationt.php?id_pationt=${idbox.get('id')}&id_doctor=${datadoctor[0]['id']}&name_doctor=${datadoctor[0]['f_name']} ${datadoctor[0]['s_name']}&namepationt=${namepationt.text}&phonepationt=${phonepationt.text}&agepationt=${agepationt.text}&date=$date";
 
       try {
         var response = await http.get(Uri.parse(url));
@@ -524,7 +522,7 @@ class control extends ChangeNotifier {
   void getpationtreservation() async {
     reservation = [];
     String url =
-        "http://$ip/doctor/view/addpationt.php?id_pationt_profile=${idbox.get('id').toString()}";
+        "$ip/doctor/view/addpationt.php?id_pationt_profile=${idbox.get('id').toString()}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -543,7 +541,7 @@ class control extends ChangeNotifier {
   void getcomments() async {
     comments = [];
     String url =
-        "http://$ip/doctor/view/comment.php?id_pat=${idbox.get('id').toString()}";
+        "$ip/doctor/view/comment.php?id_pat=${idbox.get('id').toString()}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -566,7 +564,7 @@ class control extends ChangeNotifier {
       {'mes': 0}
     ];
     String url =
-        "http://$ip/doctor/view/comment.php?id_pationt_number_comment=${idbox.get('id').toString()}";
+        "$ip/doctor/view/comment.php?id_pationt_number_comment=${idbox.get('id').toString()}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -616,7 +614,7 @@ class control extends ChangeNotifier {
   void getquistionnotification() async {
     quistionnotification = [];
     String url =
-        "http://$ip/doctor/view/getallquistion.php?idnot=$idpostnotifiction";
+        "$ip/doctor/view/getallquistion.php?idnot=$idpostnotifiction";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -637,7 +635,7 @@ class control extends ChangeNotifier {
   int indexenddoctor = 1;
   void getalldoctors() async {
     String url =
-        "http://$ip/doctor/view/get_doctors.php?id=$indexenddoctor&specialty=$specialtyt&city=$cityt";
+        "$ip/doctor/view/get_doctors.php?id=$indexenddoctor&specialty=$specialtyt&city=$cityt";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -661,7 +659,7 @@ class control extends ChangeNotifier {
 
   void getcitys() async {
     city = [""];
-    String url = "http://$ip/doctor/view/get_doctors.php?getcity=getcity";
+    String url = "$ip/doctor/view/get_doctors.php?getcity=getcity";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -682,7 +680,7 @@ class control extends ChangeNotifier {
   void getspcialty() async {
     specialty = [""];
     String url =
-        "http://$ip/doctor/view/get_doctors.php?getspcialty=getspcialty";
+        "$ip/doctor/view/get_doctors.php?getspcialty=getspcialty";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -704,7 +702,7 @@ class control extends ChangeNotifier {
   List searches = [];
   void getsearch() async {
     searches = [];
-    String url = "http://$ip/doctor/view/get_doctors.php?name=${search.text}";
+    String url = "$ip/doctor/view/get_doctors.php?name=${search.text}";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -732,7 +730,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/rating.php?id_doctor=$id_doctor&id_pationt=${idbox.get('id')}&add=add";
+        "$ip/doctor/view/rating.php?id_doctor=$id_doctor&id_pationt=${idbox.get('id')}&add=add";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -758,7 +756,7 @@ class control extends ChangeNotifier {
       {'mes': 'not'}
     ];
     String url =
-        "http://$ip/doctor/view/rating.php?id_pationt=${idbox.get('id')}&id_doctor=$id_doctor&get=get";
+        "$ip/doctor/view/rating.php?id_pationt=${idbox.get('id')}&id_doctor=$id_doctor&get=get";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -773,6 +771,30 @@ class control extends ChangeNotifier {
     print('${i_rating}');
     print('${i_rating}');
     //changeIconlike();
+    notifyListeners();
+  }
+
+  List linkapp = [
+    {'data': 'linkapp'}
+  ];
+  void getlinkapp() async {
+    
+    String url =
+        "$ip/doctor/view/getallquistion.php?linkapp=linkapp";
+
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (!response.body.isEmpty) {
+        var responsebody = jsonDecode(response.body);
+
+        linkapp = responsebody;
+
+        
+      }
+    } catch (e) {
+      print(e);
+    }
+
     notifyListeners();
   }
 }

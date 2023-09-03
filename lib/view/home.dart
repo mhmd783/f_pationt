@@ -115,6 +115,8 @@ class _home extends State<home> {
           ),
         ),
         appBar: AppBar(
+          
+          
           title: Consumer<control>(builder: (context, val, child) {
             return Text(
               //${val.f_namebox.get('f_name')} ${val.s_namebox.get('s_name')}
@@ -217,7 +219,7 @@ class _home extends State<home> {
                                         icon: Icon(
                                           Icons.refresh,
                                           size: 40,
-                                          color: Colors.blue,
+                                          //color: Colors.blue,
                                         )),
                                   );
                           }))

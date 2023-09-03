@@ -235,7 +235,7 @@ class _quistion extends State<quistion> {
                                       icon: Icon(
                                         Icons.refresh,
                                         size: 40,
-                                        color: Colors.blue,
+                                        
                                       )),
                                 );
                         }))
