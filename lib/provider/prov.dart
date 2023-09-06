@@ -3,6 +3,8 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:pationt/view/notification.dart';
+
 class control extends ChangeNotifier {
   String ip = 'https://mydoctory.net';
   late Box idbox = Hive.box("id");
@@ -17,6 +19,7 @@ class control extends ChangeNotifier {
 
   int indcity = 0;
   int indspecialty = 0;
+
   //signup////////////////////////////////////////////////////
   TextEditingController name = new TextEditingController();
   TextEditingController phone = new TextEditingController();
@@ -346,6 +349,11 @@ class control extends ChangeNotifier {
   }
 
   List datadoctor = [];
+  cleandatadoctor() {
+    datadoctor = [];
+    notifyListeners();
+  }
+
   void getdatadoctorvesitprofile() async {
     datadoctor = [];
     String url = "$ip/doctor/view/signindoc.php?id=$id_doctor";
@@ -430,8 +438,7 @@ class control extends ChangeNotifier {
   int indexendquistion = 1;
   void getallquistion() async {
     //posts = [];
-    String url =
-        "$ip/doctor/view/getallquistion.php?id=$indexendquistion";
+    String url = "$ip/doctor/view/getallquistion.php?id=$indexendquistion";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -536,10 +543,16 @@ class control extends ChangeNotifier {
 
     notifyListeners();
   }
+  
+  
 
-  List comments = [];
+  List comments = [{"id":-1}];
+  refreshpagecomment() {
+    comments = [{"id":-2}];
+    notifyListeners();
+  }
   void getcomments() async {
-    comments = [];
+    //comments = [];
     String url =
         "$ip/doctor/view/comment.php?id_pat=${idbox.get('id').toString()}";
     try {
@@ -547,11 +560,30 @@ class control extends ChangeNotifier {
       if (!response.body.isEmpty) {
         var responsebody = jsonDecode(response.body);
         comments = responsebody;
+      }else{
+        comments = [{"id":-1}];
       }
     } catch (e) {
       print(e);
     }
     print('${comments}');
+
+    notifyListeners();
+  }
+
+  List icall = [];
+  void show(int i) async {
+    String url = "$ip/doctor/view/comment.php?id_comment=${i}";
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (!response.body.isEmpty) {
+        var responsebody = jsonDecode(response.body);
+        icall = responsebody;
+      }
+    } catch (e) {
+      print(e);
+    }
+    print('${icall}');
 
     notifyListeners();
   }
@@ -607,14 +639,14 @@ class control extends ChangeNotifier {
     getquistionnotification();
     notifyListeners();
     getcommentpost();
+    show(idcomment);
   }
 
   List quistionnotification = [];
 
   void getquistionnotification() async {
     quistionnotification = [];
-    String url =
-        "$ip/doctor/view/getallquistion.php?idnot=$idpostnotifiction";
+    String url = "$ip/doctor/view/getallquistion.php?idnot=$idpostnotifiction";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -633,6 +665,7 @@ class control extends ChangeNotifier {
   //page doctor/////////////////////////////////////////////////////////////////
   List doctors = [];
   int indexenddoctor = 1;
+
   void getalldoctors() async {
     String url =
         "$ip/doctor/view/get_doctors.php?id=$indexenddoctor&specialty=$specialtyt&city=$cityt";
@@ -679,8 +712,7 @@ class control extends ChangeNotifier {
 
   void getspcialty() async {
     specialty = [""];
-    String url =
-        "$ip/doctor/view/get_doctors.php?getspcialty=getspcialty";
+    String url = "$ip/doctor/view/get_doctors.php?getspcialty=getspcialty";
     try {
       var response = await http.get(Uri.parse(url));
       if (!response.body.isEmpty) {
@@ -699,9 +731,18 @@ class control extends ChangeNotifier {
   }
 
   TextEditingController search = new TextEditingController();
-  List searches = [];
+  List searches = [
+    {"id": -1}
+  ];
+  searchrefresh() {
+    searches = [
+      {"id": -2}
+    ];
+    notifyListeners();
+  }
+
   void getsearch() async {
-    searches = [];
+    //searches = [];
     String url = "$ip/doctor/view/get_doctors.php?name=${search.text}";
     try {
       var response = await http.get(Uri.parse(url));
@@ -709,12 +750,17 @@ class control extends ChangeNotifier {
         var responsebody = jsonDecode(response.body);
         //posts.add(responsebody);
         searches = responsebody;
+      } else {
+        searches = [
+          {"id": -1}
+        ];
       }
     } catch (e) {
       print(e);
     }
     print('${searches}');
     //changeIconlike();
+    search.text = '';
     notifyListeners();
   }
 
@@ -778,9 +824,7 @@ class control extends ChangeNotifier {
     {'data': 'linkapp'}
   ];
   void getlinkapp() async {
-    
-    String url =
-        "$ip/doctor/view/getallquistion.php?linkapp=linkapp";
+    String url = "$ip/doctor/view/getallquistion.php?linkapp=linkapp";
 
     try {
       var response = await http.get(Uri.parse(url));
@@ -788,13 +832,17 @@ class control extends ChangeNotifier {
         var responsebody = jsonDecode(response.body);
 
         linkapp = responsebody;
-
-        
       }
     } catch (e) {
       print(e);
     }
 
+    notifyListeners();
+  }
+
+  cleandata() {
+    doctors = [];
+    indexenddoctor = 1;
     notifyListeners();
   }
 }

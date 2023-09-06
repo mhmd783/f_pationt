@@ -57,7 +57,7 @@ class _doctor extends State<doctor> {
     //     ),
     //   );
     // });
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -222,7 +222,6 @@ class _doctor extends State<doctor> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             );
           }),
-          
           backgroundColor: const Color.fromARGB(255, 243, 243, 58),
         ),
         body: Consumer<control>(builder: (context, val, child) {
@@ -273,7 +272,10 @@ class _doctor extends State<doctor> {
                                     onPressed: () {
                                       val.getalldoctors();
                                     },
-                                    icon: Icon(Icons.refresh,size: 40,)));
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      size: 40,
+                                    )));
                       }),
                 )
               : Center(
@@ -394,6 +396,7 @@ class _doctor extends State<doctor> {
                     color: Colors.black,
                   ),
                   onPressed: () {
+                    val.cleandata();
                     val.doctors = [];
                     val.indexenddoctor = 1;
                     val.getalldoctors();
@@ -407,6 +410,4 @@ class _doctor extends State<doctor> {
       },
     );
   }
-
-  
 }

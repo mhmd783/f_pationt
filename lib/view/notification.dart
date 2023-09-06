@@ -14,6 +14,9 @@ class _notification extends State<notification> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<control>(context, listen: false).refreshpagecomment();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<control>(context, listen: false).getcomments();
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -114,16 +117,24 @@ class _notification extends State<notification> {
         backgroundColor: const Color.fromARGB(255, 243, 243, 58),
       ),
       body: Consumer<control>(builder: (context, val, child) {
-        return !val.comments.isEmpty
-            ? Container(
+        return val.comments[0]['id']==-1
+            ?Center(
+                  child: Text(
+                    'لا يوجد بيانات',
+                    style: TextStyle(color: Colors.grey, fontSize: 20),
+                  ),
+                ):val.comments[0]['id']==-2?Center(child: CircularProgressIndicator(),): Container(
                 child: ListView.builder(
                     itemCount: val.comments.length,
                     itemBuilder: (context, i) {
                       return Card(
                         margin: EdgeInsets.all(10),
+                        color: val.comments[i]['show']==1?Colors.white:const Color.fromARGB(255, 243, 243, 58),
                         elevation: 10,
                         child: ListTile(
+
                           onTap: () {
+
                             val.getidmyquistioninnotification(i);
                             _comment();
                           },
@@ -136,12 +147,7 @@ class _notification extends State<notification> {
                       );
                     }),
               )
-            : Center(
-                  child: Text(
-                    'لا يوجد بيانات',
-                    style: TextStyle(color: Colors.grey, fontSize: 20),
-                  ),
-                );
+            ;
       }),
     );
   }

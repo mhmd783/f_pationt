@@ -17,6 +17,9 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<control>(context, listen: false).cleandatadoctor();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<control>(context, listen: false).getdatadoctorvesitprofile();
     });
 

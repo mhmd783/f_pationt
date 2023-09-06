@@ -36,7 +36,6 @@ class _profile extends State<profile> {
             textAlign: TextAlign.center,
           ),
           duration: Duration(seconds: 3),
-          
         ),
       );
     });
@@ -138,13 +137,13 @@ class _profile extends State<profile> {
               ))
         ],
         leading: IconButton(
-              onPressed: () {
-                _shar();
-              },
-              icon: Icon(
-                Icons.share,
-                color: Colors.black,
-              )),
+            onPressed: () {
+              _shar();
+            },
+            icon: Icon(
+              Icons.share,
+              color: Colors.black,
+            )),
       ),
       body: Consumer<control>(builder: (context, val, child) {
         return Container(
@@ -919,6 +918,7 @@ class _profile extends State<profile> {
       },
     );
   }
+
   Future<void> _shar() async {
     return showDialog<void>(
       context: context,
@@ -935,10 +935,12 @@ class _profile extends State<profile> {
               return Column(
                 children: [
                   Center(
-                    child: Text(
-                      " ${val.linkapp[0]['data']}",
-                      style: TextStyle(color: Colors.redAccent, fontSize: 15),
-                    ),
+                    child: val.linkapp[0]['data'] == 'linkapp'
+                        ? Center(child: CircularProgressIndicator())
+                        : Text(
+                            " ${val.linkapp[0]['data']}",
+                            style: TextStyle(color: Colors.blue, fontSize: 15),
+                          ),
                   ),
                 ],
               );

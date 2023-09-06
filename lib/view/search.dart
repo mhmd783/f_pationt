@@ -27,6 +27,7 @@ class _search extends State<search> {
       );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +59,13 @@ class _search extends State<search> {
           backgroundColor: const Color.fromARGB(255, 243, 243, 58),
         ),
         body: Consumer<control>(builder: (context, val, child) {
-          return !val.searches.isEmpty
-              ? Container(
+          return val.searches[0]['id']==-1
+              ?Center(
+                  child: Text(
+                    'لا يوجد بيانات',
+                    style: TextStyle(color: Colors.grey, fontSize: 20),
+                  ),
+                ): val.searches[0]['id']==-2?Center(child: CircularProgressIndicator(),):Container(
                   child: ListView.builder(
                       itemCount: val.searches.length,
                       itemBuilder: (constant, i) {
@@ -94,12 +100,7 @@ class _search extends State<search> {
                             ));
                       }),
                 )
-              : Center(
-                  child: Text(
-                    'لا يوجد بيانات',
-                    style: TextStyle(color: Colors.grey, fontSize: 20),
-                  ),
-                );
+              ;
         }),
         floatingActionButton: Consumer<control>(builder: (context, val, child) {
           return FloatingActionButton(
@@ -109,6 +110,7 @@ class _search extends State<search> {
               color: Colors.black,
             ),
             onPressed: () {
+              val.searchrefresh();
               val.getsearch();
             },
           );
