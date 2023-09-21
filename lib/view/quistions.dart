@@ -22,7 +22,7 @@ class _quistion extends State<quistion> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'يمكنك طرح سؤال او استفسار طبي وهيتم الرد عليك بتعليق من الدكاتره ويمكنك رؤيه اسئله الاخرين والتعليقات وحفاظا علي سريه معلوماتك لا احد يعم من طرح السؤال منعا لاحراجك',
+            'يمكنك طرح سؤال او استفسار طبي وهيتم الرد عليك بتعليق من الدكاتره ويمكنك رؤيه اسئله الاخرين والتعليقات وحفاظا علي سريه معلوماتك لا احد يلعم من طرح السؤال منعا لاحراجك',
             textAlign: TextAlign.center,
           ),
           duration: Duration(seconds: 3),
@@ -397,6 +397,12 @@ class _quistion extends State<quistion> {
             child: Consumer<control>(builder: (context, val, child) {
               return Center(
                 child: TextFormField(
+                  inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp("[a-zA-Z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBC1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE74\uFE76-\uFEFC ]"),
+                          ),
+                        ],
+                  maxLength: 250,
                   controller: val.post,
                   decoration: InputDecoration(
                     label: Text("السؤال"),
@@ -406,17 +412,25 @@ class _quistion extends State<quistion> {
             }),
           ),
           actions: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
+            Container(
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 243, 243, 58),
+                  borderRadius: BorderRadius.circular(10)),
               child: Consumer<control>(builder: (context, val, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
+                return MaterialButton(
+                  child: Text(
+                    'نشر',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
                   onPressed: () {
                     if (val.post.text != '') {
                       val.addpost();
+                    }else{
+                      val.postlist = [
+                        {'mes': 'not'}
+                      ];
                     }
                     Navigator.of(context).pop();
                     _check_addpost();

@@ -126,8 +126,11 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
                           children: [
                             val.i_rating[0]['mes'] == 'not'
                                 ? Container(
-                                    color:
-                                        const Color.fromARGB(255, 243, 243, 58),
+                                    decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 58),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: MaterialButton(
                                       onPressed: () {
                                         val.addrating();
@@ -427,7 +430,7 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
       builder: (BuildContext context) {
         return AlertDialog(
           scrollable: true,
-          title: const Text('اضافه مريض'),
+          title: const Text('حجز كشف'),
           elevation: 10,
           content: Consumer<control>(builder: (context, val, child) {
             return Form(
@@ -466,9 +469,26 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
                       val.date == ''
                           ? Expanded(
                               flex: 5,
-                              child: Text(
-                                "اختار تاريخ حجز مناسب مع مواعيد عمل الدكنور",
-                                textAlign: TextAlign.end,
+                              child: TextButton(
+                                onPressed: () {
+                                  showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2050),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      val.date = value.toString();
+                                      val.date = Jiffy.parse('${val.date}').yMd;
+                                      val.changedatepationt();
+                                    }
+                                  });
+                                },
+                                child: Text(
+                                  "اختار تاريخ حجز مناسب مع مواعيد عمل الدكنور",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ))
                           : Expanded(
                               flex: 5,
@@ -502,13 +522,17 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
             );
           }),
           actions: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
+            Container(
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 243, 243, 58),
+                  borderRadius: BorderRadius.circular(10)),
               child: Consumer<control>(builder: (context, val, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
+                return MaterialButton(
+                  child: Text(
+                    'حجز',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
                   onPressed: () {
                     if (val.date != '' &&
@@ -542,19 +566,22 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
             child: Consumer<control>(builder: (context, val, child) {
               return Column(
                 children: [
-                  val.datadoctor[0]['active']>0?Center(
-                    child: val.checkaddpationt[0]['mes'] == 'good'
-                        ? Text(
-                            'تم حجز الكشف ',
-                            style: TextStyle(
-                                color: Colors.greenAccent, fontSize: 15),
-                          )
-                        : CircularProgressIndicator(),
-                  ):Center(child:Text(
-                            'حساب الدكتور متوقف يمكنك حجز دكتور اخر ',
-                            style: TextStyle(
-                                color: Colors.redAccent, fontSize: 15),
-                          ) ),
+                  val.datadoctor[0]['active'] > 0
+                      ? Center(
+                          child: val.checkaddpationt[0]['mes'] == 'good'
+                              ? Text(
+                                  'تم حجز الكشف ',
+                                  style: TextStyle(
+                                      color: Colors.greenAccent, fontSize: 15),
+                                )
+                              : CircularProgressIndicator(),
+                        )
+                      : Center(
+                          child: Text(
+                          'حساب الدكتور متوقف يمكنك حجز دكتور اخر ',
+                          style:
+                              TextStyle(color: Colors.redAccent, fontSize: 15),
+                        )),
                 ],
               );
             }),
@@ -641,7 +668,7 @@ class _profile_doctor_visit extends State<profile_doctor_visit> {
                             style: TextStyle(
                                 color: Colors.greenAccent, fontSize: 15),
                           )
-                        :CircularProgressIndicator(),
+                        : CircularProgressIndicator(),
                   ),
                 ],
               );

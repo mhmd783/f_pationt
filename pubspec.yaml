@@ -34,6 +34,8 @@ dependencies:
   jiffy: ^6.2.1
   hive: 
   hive_flutter: 
+  flutter_local_notifications: ^15.1.1
+  permission_handler: ^11.0.0
   
   
 

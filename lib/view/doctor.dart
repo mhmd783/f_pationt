@@ -19,6 +19,13 @@ class _doctor extends State<doctor> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<control>(context, listen: false).getnumbercomment();
     });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<control>(context, listen: false).initializenotification();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<control>(context, listen: false)
+          .sendoulnotification('دكتور', 'احجز كشفك مع افضل واقرب الدكاتره');
+    });
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   ScaffoldMessenger.of(context).showSnackBar(
@@ -247,13 +254,27 @@ class _doctor extends State<doctor> {
                                     Navigator.of(context)
                                         .pushNamed("profile_doctor_visit");
                                   },
-                                  leading: CircleAvatar(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 243, 243, 58),
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      )),
+                                  // leading: CircleAvatar(
+                                  //     backgroundColor: const Color.fromARGB(
+                                  //         255, 243, 243, 58),
+                                  //     child: Icon(
+                                  //       Icons.person,
+                                  //       color: Colors.black,
+                                  //     )),
+                                  leading: Stack(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 58),
+                                        size: 40,
+                                      ),
+                                      Text(
+                                        '${val.doctors[i]['rating']}',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
                                   title: Text(
                                     "د: ${val.doctors[i]['f_name']} ${val.doctors[i]['s_name']}",
                                     style: TextStyle(

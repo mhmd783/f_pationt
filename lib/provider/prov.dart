@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:pationt/view/notification.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class control extends ChangeNotifier {
   String ip = 'https://mydoctory.net';
@@ -543,14 +543,17 @@ class control extends ChangeNotifier {
 
     notifyListeners();
   }
-  
-  
 
-  List comments = [{"id":-1}];
+  List comments = [
+    {"id": -1}
+  ];
   refreshpagecomment() {
-    comments = [{"id":-2}];
+    comments = [
+      {"id": -2}
+    ];
     notifyListeners();
   }
+
   void getcomments() async {
     //comments = [];
     String url =
@@ -560,8 +563,10 @@ class control extends ChangeNotifier {
       if (!response.body.isEmpty) {
         var responsebody = jsonDecode(response.body);
         comments = responsebody;
-      }else{
-        comments = [{"id":-1}];
+      } else {
+        comments = [
+          {"id": -1}
+        ];
       }
     } catch (e) {
       print(e);
@@ -844,5 +849,52 @@ class control extends ChangeNotifier {
     doctors = [];
     indexenddoctor = 1;
     notifyListeners();
+  }
+
+  //notifiction in os //////////////////////////////
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationPlugin =
+      FlutterLocalNotificationsPlugin();
+  final AndroidInitializationSettings androidInitializationSettings =
+      AndroidInitializationSettings('logo');
+
+  Future<void> initializenotification() async {
+    InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
+    await _flutterLocalNotificationPlugin.initialize(initializationSettings);
+    //////////////////////////////////////////////////////////////////////
+    checkNotificationPermission();
+
+    notifyListeners();
+  }
+
+  
+
+  Future<void> sendoulnotification(String title, String body) async {
+    var androidNotificationDetails = AndroidNotificationDetails(
+      'channelId',
+      'channelName',
+      playSound: true,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    var notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+    );
+
+    await _flutterLocalNotificationPlugin.periodicallyShow(
+        0, title, body, RepeatInterval.hourly, notificationDetails);
+    notifyListeners();
+  }
+
+  
+  Future<void> checkNotificationPermission() async {
+    final PermissionStatus status = await Permission.notification.status;
+    if (!status.isGranted) {
+      final PermissionStatus result = await Permission.notification.request();
+      if (!result.isGranted) {
+        print('not');
+      }
+    }
   }
 }

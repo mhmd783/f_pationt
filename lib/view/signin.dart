@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -38,10 +37,12 @@ class _signin extends State<signin> {
                     height: 200,
                     width: 200,
                   ),
-                  Text("Doctor Login", style: TextStyle(fontSize: 30)),
+                  Text("تسجيل الدخول", style: TextStyle(fontSize: 30)),
                   TextFormField(
                     controller: val.phonesignin,
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.number,
+                   
+                    maxLength: 11,
                     decoration: InputDecoration(
                       label: Text("رقم التلفون"),
                     ),
@@ -53,9 +54,13 @@ class _signin extends State<signin> {
                     height: 20,
                   ),
                   TextFormField(
+                    maxLength: 8,
                     controller: val.passsignin,
                     obscureText: true,
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'\d')),
+                        ],
                     decoration: InputDecoration(
                       label: Text("كلمه السر"),
                     ),
@@ -66,11 +71,7 @@ class _signin extends State<signin> {
                   MaterialButton(
                     onPressed: () async {
                       val.getdata();
-                      // await DelayedMultiDragGestureRecognizer(
-                      //     delay: Duration(seconds: 10));
-                      // if (val.data!=null) {
-                      //   Navigator.of(context).pushReplacementNamed("home");
-                      // }
+                      
                       _check();
                     },
                     child: Text(
@@ -112,27 +113,31 @@ class _signin extends State<signin> {
           content: Form(
             child: Consumer<control>(builder: (context, val, child) {
               return Center(
-                child:val.data==null? Center(child: CircularProgressIndicator()):val.data[0]['mes']=='not'?Center(child: Text('لا يوجد الحساب!')):
-                Center(child: Text('مرحبا بك !')),
+                child: val.data == null
+                    ? Center(child: CircularProgressIndicator())
+                    : val.data[0]['mes'] == 'not'
+                        ? Center(child: Text('لا يوجد الحساب!'))
+                        : Center(child: Text('مرحبا بك !')),
               );
             }),
           ),
           actions: <Widget>[
             Consumer<control>(builder: (context, val, child) {
-              return val.data!=null&&val.data[0]['mes']!='not'?Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(50)),
-              
-              child: MaterialButton(
-                child: 
-                Text("دخول"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed("quistion");
-                },
-              ),
-            ):Container();
+              return val.data != null && val.data[0]['mes'] != 'not'
+                  ? Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: MaterialButton(
+                        child: Text("دخول"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context)
+                              .pushReplacementNamed("doctor");
+                        },
+                      ),
+                    )
+                  : Container();
             }),
           ],
         );
@@ -140,4 +145,3 @@ class _signin extends State<signin> {
     );
   }
 }
-  

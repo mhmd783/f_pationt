@@ -412,102 +412,6 @@ class _profile extends State<profile> {
 
   /////////////////////////////////////////////////////////////////////////////
 
-  Future<void> _delet() async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text('مسح'),
-          elevation: 10,
-          content: Form(
-            child: Consumer<control>(builder: (context, val, child) {
-              return Column(
-                children: [
-                  Center(
-                    child: Text(
-                      '!!هل انت متاكد من عمليه الحذف',
-                      style: TextStyle(color: Colors.redAccent, fontSize: 15),
-                    ),
-                  ),
-                ],
-              );
-            }),
-          ),
-          actions: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              child: Consumer<control>(builder: (context, val, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    val.delet_work_time();
-                    val.get_work_time();
-                    Navigator.of(context).pop();
-                    _check_delete_work_time();
-                  },
-                );
-              }),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _check_delete_work_time() async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text('تحقق'),
-          elevation: 10,
-          content: Form(
-            child: Consumer<control>(builder: (context, val, child) {
-              return Column(
-                children: [
-                  Center(
-                    child: val.delet[0]['mes'] == 'good'
-                        ? Text(
-                            'تم الحذف',
-                            style: TextStyle(
-                                color: Colors.greenAccent, fontSize: 15),
-                          )
-                        : Text(
-                            'هناك مشكله!!',
-                            style: TextStyle(
-                                color: Colors.redAccent, fontSize: 15),
-                          ),
-                  ),
-                ],
-              );
-            }),
-          ),
-          actions: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              child: Consumer<control>(builder: (context, val, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                );
-              }),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _addpost() async {
     return showDialog<void>(
       context: context,
@@ -520,6 +424,13 @@ class _profile extends State<profile> {
             child: Consumer<control>(builder: (context, val, child) {
               return Center(
                 child: TextFormField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(
+                          "[a-zA-Z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBC1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE74\uFE76-\uFEFC ]"),
+                    ),
+                  ],
+                  maxLength: 250,
                   controller: val.post,
                   decoration: InputDecoration(
                     label: Text("السؤال"),
@@ -529,17 +440,25 @@ class _profile extends State<profile> {
             }),
           ),
           actions: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
+            Container(
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 243, 243, 58),
+                  borderRadius: BorderRadius.circular(10)),
               child: Consumer<control>(builder: (context, val, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
+                return MaterialButton(
+                  child: Text(
+                    'نشر',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
                   onPressed: () {
                     if (val.post.text != '') {
                       val.addpost();
+                    } else {
+                      val.postlist = [
+                        {'mes': 'not'}
+                      ];
                     }
                     Navigator.of(context).pop();
                     _check_addpost();
@@ -958,7 +877,7 @@ class _profile extends State<profile> {
                   onPressed: () async {
                     Clipboard.setData(ClipboardData(
                         text:
-                            "تطبيق دكتور لحجز معاد كشف مع افضل واقرب الدكاتره ليك واسعار الكشف وعنوان الدكتور وهيرد عليك حد ياكد حجزك حمل التطبيق وشاركه مع اصدقائك من هذا اللينك  \n https://google.com"));
+                            "تطبيق دكتور لحجز معاد كشف مع افضل واقرب الدكاتره ليك واسعار الكشف وعنوان الدكتور وهيرد عليك حد ياكد حجزك حمل التطبيق وشاركه مع اصدقائك من هذا اللينك  \n ${val.linkapp[0]['data']}"));
                     Navigator.of(context).pop();
                   },
                 );
